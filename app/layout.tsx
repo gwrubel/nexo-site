@@ -14,12 +14,16 @@ export async function generateMetadata(): Promise<Metadata> {
     "portfolio-criativo-0826.gwrubel.chatgpt.site";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? "https";
   const origin = `${protocol}://${host}`;
-  const socialImage = `${origin}/og.png`;
+  const socialImage = `${origin}/og-v2.png`;
 
   return {
     metadataBase: new URL(origin),
     title,
     description,
+    icons: {
+      icon: "/wrubel-mark.png",
+      apple: "/wrubel-mark.png",
+    },
     openGraph: {
       title,
       description,

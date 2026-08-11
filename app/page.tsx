@@ -1,3 +1,5 @@
+import { LabVisual, SiteInteractions } from "./interactions";
+
 const services = [
   {
     index: "01",
@@ -89,15 +91,10 @@ const values = [
 function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`brand-lockup ${compact ? "compact" : ""}`}>
-      <span className="brand-symbol" aria-hidden="true">
-        W<span>.</span>
-      </span>
-      {!compact && (
-        <span className="brand-name">
-          <strong>Wrubel</strong>
-          <small>Labs</small>
-        </span>
-      )}
+      <img
+        src={compact ? "/wrubel-mark.png" : "/wrubel-lockup.png"}
+        alt={compact ? "Símbolo Wrubel Labs" : "Wrubel Labs"}
+      />
     </span>
   );
 }
@@ -105,6 +102,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
 export default function Home() {
   return (
     <main>
+      <SiteInteractions />
       <header className="site-header">
         <a href="#inicio" aria-label="Wrubel Labs — início">
           <Brand />
@@ -115,14 +113,14 @@ export default function Home() {
           <a href="#projetos">Projetos</a>
           <a href="#sobre">Sobre</a>
         </nav>
-        <a className="nav-contact" href="#contato">
+        <a className="nav-contact" href="#contato" data-magnetic>
           Falar comigo <span aria-hidden="true">↗</span>
         </a>
       </header>
 
       <section className="hero" id="inicio">
         <div className="hero-grid" aria-hidden="true" />
-        <div className="hero-copy">
+        <div className="hero-copy" data-reveal>
           <span className="eyebrow">
             <i /> Desenvolvimento de software sob medida
           </span>
@@ -138,48 +136,17 @@ export default function Home() {
             eficientes e preparados para gerar resultado.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="#contato">
+            <a className="button primary" href="#contato" data-magnetic>
               Começar um projeto <span aria-hidden="true">→</span>
             </a>
-            <a className="button secondary" href="#projetos">
+            <a className="button secondary" href="#projetos" data-magnetic>
               Ver projetos
             </a>
           </div>
         </div>
 
-        <div className="hero-visual" aria-label="Representação visual de uma solução digital">
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="glow" />
-          <div className="code-window">
-            <div className="window-top">
-              <span />
-              <span />
-              <span />
-              <small>wrubel-labs / solution.ts</small>
-            </div>
-            <div className="code-lines" aria-hidden="true">
-              <span className="line line-1" />
-              <span className="line line-2" />
-              <span className="line line-3" />
-              <span className="line line-4" />
-              <span className="line line-5" />
-              <span className="line line-6" />
-            </div>
-            <div className="solution-card">
-              <span>system.status</span>
-              <strong>ONLINE</strong>
-              <i />
-            </div>
-          </div>
-          <div className="visual-badge badge-top">
-            <span>01</span>
-            <strong>BUILD</strong>
-          </div>
-          <div className="visual-badge badge-bottom">
-            <span>03</span>
-            <strong>SOLVE</strong>
-          </div>
+        <div className="hero-visual" data-reveal>
+          <LabVisual />
         </div>
 
         <div className="hero-foot">
@@ -192,8 +159,8 @@ export default function Home() {
       </section>
 
       <section className="values-bar" aria-label="Princípios da Wrubel Labs">
-        {values.map((value) => (
-          <div className="value-item" key={value.title}>
+        {values.map((value, index) => (
+          <div className={`value-item reveal-delay-${index + 1}`} key={value.title} data-reveal>
             <span aria-hidden="true">{value.icon}</span>
             <div>
               <strong>{value.title}</strong>
@@ -204,7 +171,7 @@ export default function Home() {
       </section>
 
       <section className="services section-shell" id="servicos">
-        <div className="section-intro">
+        <div className="section-intro" data-reveal>
           <div>
             <span className="section-index">01 / Serviços</span>
             <h2>
@@ -221,8 +188,13 @@ export default function Home() {
         </div>
 
         <div className="services-grid">
-          {services.map((service) => (
-            <article className="service-card" key={service.index}>
+          {services.map((service, index) => (
+            <article
+              className={`service-card reveal-delay-${index + 1}`}
+              key={service.index}
+              data-reveal
+              data-tilt
+            >
               <div className="service-top">
                 <span className="service-symbol" aria-hidden="true">
                   {service.symbol}
@@ -242,7 +214,7 @@ export default function Home() {
       </section>
 
       <section className="projects section-shell" id="projetos">
-        <div className="section-intro projects-intro">
+        <div className="section-intro projects-intro" data-reveal>
           <div>
             <span className="section-index">02 / Projetos</span>
             <h2>
@@ -263,9 +235,13 @@ export default function Home() {
         </div>
 
         <div className="projects-grid">
-          {projects.map((project) => (
-            <article className="project-card" key={project.id}>
-              <div className={`project-preview ${project.className}`}>
+          {projects.map((project, index) => (
+            <article
+              className={`project-card reveal-delay-${index + 1}`}
+              key={project.id}
+              data-reveal
+            >
+              <div className={`project-preview ${project.className}`} data-tilt>
                 <div className="preview-bar">
                   <span>{project.id}</span>
                   <span>WRUBEL.LABS</span>
@@ -306,10 +282,10 @@ export default function Home() {
       </section>
 
       <section className="about" id="sobre">
-        <div className="about-mark" aria-hidden="true">
+        <div className="about-mark" aria-hidden="true" data-reveal data-tilt>
           <Brand compact />
         </div>
-        <div className="about-content">
+        <div className="about-content" data-reveal>
           <span className="section-index">03 / Sobre</span>
           <h2>
             Um laboratório de software para transformar desafios em soluções.
@@ -326,7 +302,7 @@ export default function Home() {
               motivo e cada entrega tem um objetivo.
             </p>
           </div>
-          <div className="process-grid">
+          <div className="process-grid" data-reveal>
             <div>
               <span>01</span>
               <strong>Entender</strong>
@@ -352,21 +328,21 @@ export default function Home() {
       </section>
 
       <section className="stack" aria-label="Tecnologias">
-        <span>TYPESCRIPT</span>
-        <i>✦</i>
-        <span>REACT</span>
-        <i>✦</i>
-        <span>NODE.JS</span>
-        <i>✦</i>
-        <span>CLOUD</span>
-        <i>✦</i>
-        <span>POSTGRESQL</span>
-        <i>✦</i>
-        <span>APIS</span>
+        <div className="stack-track">
+          <span>TYPESCRIPT</span><i>✦</i><span>REACT</span><i>✦</i>
+          <span>NODE.JS</span><i>✦</i><span>CLOUD</span><i>✦</i>
+          <span>POSTGRESQL</span><i>✦</i><span>APIS</span><i>✦</i>
+          <span aria-hidden="true">TYPESCRIPT</span><i aria-hidden="true">✦</i>
+          <span aria-hidden="true">REACT</span><i aria-hidden="true">✦</i>
+          <span aria-hidden="true">NODE.JS</span><i aria-hidden="true">✦</i>
+          <span aria-hidden="true">CLOUD</span><i aria-hidden="true">✦</i>
+          <span aria-hidden="true">POSTGRESQL</span><i aria-hidden="true">✦</i>
+          <span aria-hidden="true">APIS</span><i aria-hidden="true">✦</i>
+        </div>
       </section>
 
       <section className="contact section-shell" id="contato">
-        <div className="contact-copy">
+        <div className="contact-copy" data-reveal>
           <span className="section-index">04 / Contato</span>
           <h2>
             Tem um desafio?
@@ -377,11 +353,15 @@ export default function Home() {
             Conte um pouco sobre a sua ideia. Eu retorno para entendermos o
             melhor próximo passo.
           </p>
-          <a className="button primary contact-button" href="mailto:contato@wrubel.dev">
+          <a
+            className="button primary contact-button"
+            href="mailto:contato@wrubel.dev"
+            data-magnetic
+          >
             contato@wrubel.dev <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <div className="contact-visual" aria-hidden="true">
+        <div className="contact-visual" aria-hidden="true" data-reveal data-tilt>
           <div className="contact-rings" />
           <Brand compact />
           <span>READY TO BUILD</span>

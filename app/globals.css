@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
@@ -21,6 +22,8 @@
 html {
   scroll-behavior: smooth;
   background: var(--night-deep);
+  --pointer-x: 50vw;
+  --pointer-y: 50vh;
 }
 
 body {
@@ -31,6 +34,21 @@ body {
   font-size: 16px;
   line-height: 1.6;
   text-rendering: optimizeLegibility;
+}
+
+.pointer-glow {
+  position: fixed;
+  z-index: 99;
+  left: var(--pointer-x);
+  top: var(--pointer-y);
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.075);
+  filter: blur(65px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 300ms ease, height 300ms ease;
 }
 
 body::before {
@@ -61,58 +79,51 @@ a:focus-visible {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   border-bottom: 1px solid var(--line);
-  position: relative;
-  z-index: 20;
+  padding: 0 18px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  background: rgba(7, 11, 18, 0.24);
+  backdrop-filter: blur(0);
+  transition: height 220ms ease, background-color 220ms ease, backdrop-filter 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.site-header.is-scrolled {
+  height: 72px;
+  background: rgba(7, 11, 18, 0.84);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
 }
 
 .brand-lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 13px;
-  width: fit-content;
+  width: 184px;
+  height: 46px;
+  display: block;
+  overflow: hidden;
+  position: relative;
 }
 
-.brand-symbol {
-  display: inline-flex;
-  align-items: baseline;
-  color: #f8fafc;
-  font-size: 31px;
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.17em;
-  transform: skewX(-8deg);
-  text-shadow: 7px 0 0 rgba(37, 99, 235, 0.82);
+.brand-lockup > img {
+  width: 300px;
+  max-width: none;
+  height: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: block;
+  transform: translate(-50%, -50%);
+  transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.brand-symbol span {
-  color: var(--blue);
-  margin-left: 5px;
-  text-shadow: none;
+.brand-lockup.compact {
+  width: clamp(220px, 27vw, 430px);
+  height: auto;
+  aspect-ratio: 1;
 }
 
-.brand-name {
-  display: flex;
-  flex-direction: column;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
-.brand-name strong {
-  font-size: 13px;
-  letter-spacing: 0.24em;
-}
-
-.brand-name small {
-  margin-top: 7px;
-  color: #60a5fa;
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.52em;
-}
-
-.brand-lockup.compact .brand-symbol {
-  font-size: clamp(5rem, 12vw, 11rem);
-  text-shadow: 22px 0 0 rgba(37, 99, 235, 0.9);
+.brand-lockup.compact > img {
+  width: 158%;
 }
 
 nav {
@@ -122,10 +133,31 @@ nav {
 }
 
 nav a {
+  position: relative;
   color: var(--light);
   font-size: 12px;
   font-weight: 600;
   transition: color 180ms ease;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: -12px;
+  height: 1px;
+  background: #3b82f6;
+  transition: right 220ms ease;
+}
+
+nav a:hover::after,
+nav a.is-active::after {
+  right: 0;
+}
+
+nav a.is-active {
+  color: #ffffff;
 }
 
 nav a:hover {
@@ -133,6 +165,8 @@ nav a:hover {
 }
 
 .nav-contact {
+  --magnetic-x: 0px;
+  --magnetic-y: 0px;
   justify-self: end;
   display: inline-flex;
   gap: 16px;
@@ -143,6 +177,7 @@ nav a:hover {
   font-size: 12px;
   font-weight: 700;
   transition: border-color 180ms ease, background-color 180ms ease;
+  transform: translate(var(--magnetic-x), var(--magnetic-y));
 }
 
 .nav-contact:hover {
@@ -228,6 +263,8 @@ nav a:hover {
 }
 
 .button {
+  --magnetic-x: 0px;
+  --magnetic-y: 0px;
   min-height: 49px;
   display: inline-flex;
   align-items: center;
@@ -236,11 +273,28 @@ nav a:hover {
   padding: 0 21px;
   font-size: 12px;
   font-weight: 750;
-  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  position: relative;
+  overflow: hidden;
+  transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease,
+    box-shadow 180ms ease;
+  transform: translate(var(--magnetic-x), var(--magnetic-y));
 }
 
 .button:hover {
-  transform: translateY(-2px);
+  box-shadow: 0 16px 46px rgba(37, 99, 235, 0.28);
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, rgba(255, 255, 255, 0.18), transparent 75%);
+  transform: translateX(-120%);
+  transition: transform 520ms ease;
+}
+
+.button:hover::before {
+  transform: translateX(120%);
 }
 
 .button.primary {
@@ -266,6 +320,287 @@ nav a:hover {
   min-height: 610px;
   display: grid;
   place-items: center;
+  perspective: 1100px;
+}
+
+[data-reveal] {
+  opacity: 0;
+  translate: 0 28px;
+  transition: opacity 760ms cubic-bezier(0.16, 1, 0.3, 1),
+    translate 760ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.reveal-delay-1 {
+  transition-delay: 60ms;
+}
+
+.reveal-delay-2 {
+  transition-delay: 120ms;
+}
+
+.reveal-delay-3 {
+  transition-delay: 180ms;
+}
+
+.reveal-delay-4 {
+  transition-delay: 240ms;
+}
+
+[data-tilt] {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform 180ms ease, translate 220ms ease, border-color 220ms ease,
+    background-color 220ms ease;
+}
+
+.lab-visual {
+  width: min(100%, 650px);
+  min-height: 650px;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  isolation: isolate;
+}
+
+.lab-glow {
+  position: absolute;
+  z-index: -2;
+  top: 13%;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: rgba(37, 99, 235, 0.36);
+  filter: blur(100px);
+  transition: background-color 400ms ease;
+}
+
+.mode-solve .lab-glow {
+  background: rgba(79, 70, 229, 0.42);
+}
+
+.lab-orbit {
+  position: absolute;
+  z-index: -1;
+  top: 2%;
+  width: 510px;
+  height: 510px;
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  border-radius: 50%;
+  animation: orbit-rotate 18s linear infinite;
+}
+
+.lab-orbit::before {
+  content: "";
+  position: absolute;
+  left: 13%;
+  top: 11%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #60a5fa;
+  box-shadow: 0 0 22px #2563eb;
+}
+
+.lab-orbit-two {
+  top: 10%;
+  width: 410px;
+  height: 410px;
+  border-color: rgba(79, 70, 229, 0.25);
+  animation-direction: reverse;
+  animation-duration: 13s;
+}
+
+.lab-logo-stage {
+  width: 84%;
+  aspect-ratio: 1.15;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(96, 165, 250, 0.28);
+  background: #050a12;
+  box-shadow: 0 42px 100px rgba(0, 0, 0, 0.52), inset 0 0 90px rgba(37, 99, 235, 0.05);
+  transform: translateZ(26px);
+}
+
+.lab-logo-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(37, 99, 235, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.1) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: linear-gradient(to bottom, transparent, black 25%, transparent 90%);
+  pointer-events: none;
+}
+
+.lab-logo-stage img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transform: scale(1.04);
+  animation: logo-breathe 6s ease-in-out infinite;
+}
+
+.lab-logo-stage small {
+  position: absolute;
+  z-index: 3;
+  left: 18px;
+  top: 16px;
+  color: rgba(147, 197, 253, 0.66);
+  font: 500 8px/1 "Sora", sans-serif;
+  letter-spacing: 0.16em;
+}
+
+.scan-line {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: #60a5fa;
+  box-shadow: 0 0 18px #2563eb, 0 0 52px #2563eb;
+  opacity: 0.68;
+  animation: scan 4.2s ease-in-out infinite;
+}
+
+.corner {
+  position: absolute;
+  z-index: 3;
+  width: 21px;
+  height: 21px;
+  border-color: #3b82f6;
+}
+
+.corner-a {
+  left: 14px;
+  bottom: 14px;
+  border-left: 1px solid;
+  border-bottom: 1px solid;
+}
+
+.corner-b {
+  right: 14px;
+  top: 14px;
+  border-right: 1px solid;
+  border-top: 1px solid;
+}
+
+.lab-console {
+  width: 90%;
+  min-height: 245px;
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 0;
+  padding: 23px 25px 19px;
+  border: 1px solid rgba(96, 165, 250, 0.32);
+  background: rgba(8, 14, 24, 0.94);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.48);
+  backdrop-filter: blur(20px);
+  transform: translateZ(52px);
+}
+
+.console-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #64748b;
+  font: 600 8px/1 "Sora", sans-serif;
+  letter-spacing: 0.13em;
+}
+
+.console-head strong {
+  margin-left: auto;
+  color: #bfdbfe;
+  font-size: 8px;
+}
+
+.console-head i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 12px #22c55e;
+}
+
+.lab-console h2 {
+  margin: 20px 0 7px;
+  font-size: clamp(1.35rem, 2.3vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.lab-console > p {
+  max-width: 480px;
+  margin: 0;
+  color: #8190a5;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.console-progress {
+  height: 2px;
+  margin: 20px 0 18px;
+  background: #1e293b;
+  overflow: hidden;
+}
+
+.console-progress span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #4f46e5, #60a5fa);
+  box-shadow: 0 0 12px #2563eb;
+  transition: width 520ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lab-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.lab-tabs button {
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: transparent;
+  color: #94a3b8;
+  font-family: "Sora", sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+
+.lab-tabs button:hover,
+.lab-tabs button.is-active {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.12);
+  color: #ffffff;
+}
+
+.lab-tabs button:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.lab-tabs small {
+  color: #3b82f6;
+  font-size: 7px;
 }
 
 .glow {
@@ -572,13 +907,28 @@ nav a:hover {
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: rgba(17, 24, 36, 0.28);
-  transition: transform 220ms ease, background-color 220ms ease, border-color 220ms ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
+  translate: 0 -6px;
   border-color: rgba(96, 165, 250, 0.5);
   background: rgba(37, 99, 235, 0.07);
+}
+
+.service-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(circle at var(--spot-x) var(--spot-y), rgba(59, 130, 246, 0.17), transparent 42%);
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.service-card:hover::before {
+  opacity: 1;
 }
 
 .service-top {
@@ -691,6 +1041,21 @@ nav a:hover {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   box-shadow: 0 0 80px rgba(59, 130, 246, 0.25);
+}
+
+.project-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  opacity: 0;
+  background: radial-gradient(circle at var(--spot-x) var(--spot-y), rgba(147, 197, 253, 0.24), transparent 38%);
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.project-preview:hover::after {
+  opacity: 1;
 }
 
 .project-blue {
@@ -874,6 +1239,11 @@ nav a:hover {
   z-index: 2;
 }
 
+.about-mark:hover .brand-lockup > img,
+.contact-visual:hover .brand-lockup > img {
+  transform: translate(-50%, -50%) scale(1.035);
+}
+
 .about-content {
   padding: 120px clamp(40px, 6vw, 110px);
 }
@@ -943,9 +1313,6 @@ nav a:hover {
 
 .stack {
   padding: 36px 0;
-  display: flex;
-  align-items: center;
-  gap: 34px;
   overflow: hidden;
   color: #94a3b8;
   background: #070b12;
@@ -955,8 +1322,17 @@ nav a:hover {
   letter-spacing: -0.035em;
 }
 
-.stack span:first-child {
-  margin-left: -25px;
+.stack-track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.stack:hover .stack-track {
+  animation-play-state: paused;
 }
 
 .stack i {
@@ -1074,6 +1450,49 @@ footer > small {
   letter-spacing: 0.07em;
 }
 
+@keyframes orbit-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logo-breathe {
+  0%,
+  100% {
+    transform: scale(1.03);
+    filter: brightness(0.96);
+  }
+  50% {
+    transform: scale(1.075);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes scan {
+  0%,
+  8% {
+    top: 0;
+    opacity: 0;
+  }
+  16% {
+    opacity: 0.7;
+  }
+  84% {
+    opacity: 0.7;
+  }
+  92%,
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1082,7 +1501,19 @@ footer > small {
   *,
   *::before,
   *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .pointer-glow {
+    display: none;
+  }
+
+  [data-tilt] {
+    transform: none;
   }
 }
 
@@ -1153,6 +1584,14 @@ footer > small {
     min-height: 480px;
   }
 
+  .lab-visual {
+    min-height: 590px;
+  }
+
+  .lab-logo-stage {
+    width: min(88%, 540px);
+  }
+
   .hero-foot {
     display: none;
   }
@@ -1200,8 +1639,17 @@ footer > small {
 }
 
 @media (max-width: 560px) {
-  .site-header .brand-name {
-    display: none;
+  .site-header {
+    padding: 0 8px;
+  }
+
+  .site-header .brand-lockup {
+    width: 118px;
+    height: 38px;
+  }
+
+  .site-header .brand-lockup > img {
+    width: 205px;
   }
 
   .nav-contact {
@@ -1227,7 +1675,31 @@ footer > small {
   }
 
   .hero-visual {
-    min-height: 360px;
+    min-height: 520px;
+  }
+
+  .lab-visual {
+    min-height: 510px;
+  }
+
+  .lab-logo-stage {
+    width: 96%;
+  }
+
+  .lab-console {
+    width: 97%;
+    min-height: 236px;
+    padding: 19px 17px 16px;
+  }
+
+  .lab-orbit {
+    width: 350px;
+    height: 350px;
+  }
+
+  .lab-orbit-two {
+    width: 270px;
+    height: 270px;
   }
 
   .orbit {
