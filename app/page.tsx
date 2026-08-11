@@ -92,7 +92,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`brand-lockup ${compact ? "compact" : ""}`}>
       <img
-        src={compact ? "/wrubel-mark.png" : "/wrubel-lockup.png"}
+        src={compact ? "/wrubel-mark.png" : "/wrubel-lockup-transparent.png"}
         alt={compact ? "Símbolo Wrubel Labs" : "Wrubel Labs"}
       />
     </span>
