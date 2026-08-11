@@ -1,4 +1,5 @@
 import { LabVisual, SiteInteractions } from "./interactions";
+import { Crosshair, Gauge, Rocket, ShieldCheck } from "lucide-react";
 
 const services = [
   {
@@ -67,22 +68,22 @@ const projects = [
 
 const values = [
   {
-    icon: "ϟ",
+    icon: Gauge,
     title: "Performance",
     description: "Soluções rápidas, escaláveis e otimizadas.",
   },
   {
-    icon: "✓",
+    icon: ShieldCheck,
     title: "Confiança",
     description: "Código limpo, seguro e bem estruturado.",
   },
   {
-    icon: "◎",
+    icon: Crosshair,
     title: "Foco no cliente",
     description: "Entendimento profundo do que realmente importa.",
   },
   {
-    icon: "↗",
+    icon: Rocket,
     title: "Inovação",
     description: "Tecnologia aplicada para impulsionar o negócio.",
   },
@@ -136,10 +137,10 @@ export default function Home() {
             eficientes e preparados para gerar resultado.
           </p>
           <div className="hero-actions">
-            <a className="button primary" href="#contato" data-magnetic>
+            <a className="button primary" href="#contato">
               Começar um projeto <span aria-hidden="true">→</span>
             </a>
-            <a className="button secondary" href="#projetos" data-magnetic>
+            <a className="button secondary" href="#projetos">
               Ver projetos
             </a>
           </div>
@@ -159,15 +160,21 @@ export default function Home() {
       </section>
 
       <section className="values-bar" aria-label="Princípios da Wrubel Labs">
-        {values.map((value, index) => (
-          <div className={`value-item reveal-delay-${index + 1}`} key={value.title} data-reveal>
-            <span aria-hidden="true">{value.icon}</span>
-            <div>
-              <strong>{value.title}</strong>
-              <p>{value.description}</p>
+        {values.map((value, index) => {
+          const Icon = value.icon;
+
+          return (
+            <div className={`value-item reveal-delay-${index + 1}`} key={value.title} data-reveal>
+              <span className="value-icon" aria-hidden="true">
+                <Icon strokeWidth={1.7} />
+              </span>
+              <div>
+                <strong>{value.title}</strong>
+                <p>{value.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </section>
 
       <section className="services section-shell" id="servicos">
@@ -356,7 +363,6 @@ export default function Home() {
           <a
             className="button primary contact-button"
             href="mailto:contato@wrubel.dev"
-            data-magnetic
           >
             contato@wrubel.dev <span aria-hidden="true">↗</span>
           </a>
