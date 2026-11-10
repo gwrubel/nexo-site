@@ -1,0 +1,12 @@
+.label {
+  display: block;
+  margin-bottom: 24px;
+  color: var(--mid);
+  font: 700 10px/1.2 monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.dark {
+  color: #6e6e6e;
+}

@@ -1,0 +1,357 @@
+.services {
+  width: var(--shell);
+  margin: 0 auto;
+  padding: 72px 0;
+  background: var(--night);
+}
+
+.intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.5fr);
+  gap: 7vw;
+  align-items: end;
+  margin-bottom: 64px;
+}
+
+.intro h2 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4.2vw, 4.8rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+  font-weight: 700;
+}
+
+.intro h2 em {
+  color: var(--mid);
+  font-style: normal;
+}
+
+.intro > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 460px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.card {
+  --spot-x: 50%;
+  --spot-y: 50%;
+
+  min-height: 420px;
+  padding: 30px;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+
+  background-color: rgba(11, 11, 11, 0.6);
+
+  transition:
+    var(--reveal-transition),
+    background-color 220ms ease;
+}
+
+/* Soft fill that follows the cursor (coordinates come from data-spotlight). */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+
+  background: radial-gradient(
+    420px circle at var(--spot-x) var(--spot-y),
+    rgba(255, 255, 255, 0.06),
+    transparent 60%
+  );
+
+  transition: opacity 320ms ease;
+  pointer-events: none;
+}
+
+/* Border ring lit only near the cursor. It sits on the shared grid lines
+   (inset -1px), so neighbouring cards light up the same edge. */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  padding: 1px;
+  opacity: 0;
+
+  background: radial-gradient(
+    260px circle at calc(var(--spot-x) + 1px) calc(var(--spot-y) + 1px),
+    rgba(255, 255, 255, 0.7),
+    transparent 70%
+  );
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+
+  transition: opacity 320ms ease;
+  pointer-events: none;
+}
+
+.accent {
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  z-index: 3;
+  height: 2px;
+
+  background: var(--white);
+  transform: scaleX(0);
+  transform-origin: left;
+
+  transition: transform 480ms cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 1;
+}
+
+.cardTop small {
+  color: var(--gray-dark);
+  font: 10px/1 monospace;
+  transition: color 220ms ease;
+}
+
+.icon {
+  color: var(--light);
+
+  transition:
+    transform 220ms ease,
+    color 220ms ease,
+    filter 220ms ease;
+}
+
+.card h3 {
+  margin: 68px 0 16px;
+  font-size: clamp(1.35rem, 1.7vw, 1.85rem);
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+  position: relative;
+  z-index: 1;
+}
+
+.card > p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  position: relative;
+  z-index: 1;
+}
+
+.card ul {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 24px 0 0;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  border-top: 1px solid var(--line);
+
+  position: relative;
+  z-index: 1;
+}
+
+.card li {
+  color: var(--muted);
+  font: 9px/1 monospace;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: color 220ms ease;
+}
+
+.card li:not(:last-child)::after {
+  content: " /";
+  color: var(--mid);
+}
+
+.cta {
+  align-self: flex-start;
+  margin-top: 20px;
+
+  color: var(--light);
+  font: 10px/1 monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* Animate the inner span: a transform on .cta itself would become the
+   containing block and shrink the stretched link below. */
+.cta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  opacity: 0;
+  translate: 0 6px;
+
+  transition:
+    opacity 260ms ease,
+    translate 260ms ease,
+    gap 220ms ease;
+}
+
+/* Stretched link: the whole card is the click target. */
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+.cta:focus-visible {
+  outline: none;
+}
+
+.card:has(.cta:focus-visible) {
+  outline: 2px solid var(--white);
+  outline-offset: -2px;
+}
+
+/* Active card (mouse or keyboard) */
+.card:hover,
+.card:focus-within {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.card:hover .accent,
+.card:focus-within .accent {
+  transform: scaleX(1);
+}
+
+.card:hover .cardTop small,
+.card:focus-within .cardTop small {
+  color: var(--white);
+}
+
+.card:hover .icon,
+.card:focus-within .icon {
+  transform: translateY(-2px);
+  color: var(--white);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.35));
+}
+
+.card:hover li,
+.card:focus-within li {
+  color: var(--light);
+}
+
+.card:hover .cta span,
+.card:focus-within .cta span {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.card:hover .cta span {
+  gap: 12px;
+}
+
+@media (hover: hover) {
+  .grid:hover .card::before,
+  .grid:hover .card::after {
+    opacity: 1;
+  }
+
+  .cardTop,
+  .card h3,
+  .card > p,
+  .card ul {
+    transition: opacity 260ms ease;
+  }
+
+  .grid:has(.card:hover) .card:not(:hover) :is(.cardTop, h3, p, ul) {
+    opacity: 0.5;
+  }
+}
+
+@media (hover: none) {
+  .cta span {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    min-height: 380px;
+  }
+}
+
+@media (max-width: 820px) {
+  .services {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  .intro h2 {
+    font-size: clamp(2.2rem, 8vw, 3.8rem);
+  }
+
+  .intro > p {
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 560px) {
+  .services {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    min-height: 330px;
+    padding: 26px;
+  }
+
+  .card h3 {
+    margin-top: 56px;
+  }
+
+  .intro h2 {
+    font-size: clamp(2rem, 10vw, 3rem);
+    letter-spacing: -0.045em;
+  }
+}

@@ -1,0 +1,40 @@
+.stack {
+  padding: 36px 0;
+  overflow: hidden;
+  color: var(--gray-dark);
+  background: var(--black);
+  border-block: 1px solid var(--line);
+  white-space: nowrap;
+  font-size: clamp(1.35rem, 2.8vw, 3.2rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.track {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.stack:hover .track {
+  animation-play-state: paused;
+}
+
+.item {
+  display: contents;
+}
+
+.item i {
+  color: var(--white);
+  font-style: normal;
+  font-size: 0.45em;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
