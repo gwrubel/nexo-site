@@ -1,0 +1,75 @@
+.pointerGlow {
+  position: fixed;
+  z-index: 99;
+  left: var(--pointer-x);
+  top: var(--pointer-y);
+  width: 460px;
+  height: 460px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.045);
+  filter: blur(65px);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: width 300ms ease, height 300ms ease;
+}
+
+/*
+ * Reveal delay lives in a variable (not transition-delay) so it only applies to
+ * opacity/translate. Components that declare their own `transition` must list
+ * `var(--reveal-transition)` first to keep the entrance animation.
+ */
+:global([data-reveal]) {
+  --reveal-delay: 0ms;
+  --reveal-transition: opacity 760ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay),
+    translate 760ms cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay);
+  opacity: 0;
+  translate: 0 28px;
+  transition: var(--reveal-transition);
+}
+
+:global([data-reveal][data-visible]) {
+  opacity: 1;
+  translate: 0 0;
+}
+
+:global([data-reveal][data-reveal-delay="1"]) {
+  --reveal-delay: 60ms;
+}
+
+:global([data-reveal][data-reveal-delay="2"]) {
+  --reveal-delay: 120ms;
+}
+
+:global([data-reveal][data-reveal-delay="3"]) {
+  --reveal-delay: 180ms;
+}
+
+:global([data-reveal][data-reveal-delay="4"]) {
+  --reveal-delay: 240ms;
+}
+
+:global([data-tilt]) {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --tilt-transition: transform 180ms ease, border-color 220ms ease,
+    background-color 220ms ease;
+  transform: perspective(1000px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: var(--tilt-transition);
+}
+
+:global([data-reveal][data-tilt]) {
+  transition: var(--reveal-transition), var(--tilt-transition);
+}
+
+@media (pointer: coarse) {
+  .pointerGlow {
+    display: none;
+  }
+
+  :global([data-tilt]) {
+    transform: none;
+  }
+}
