@@ -17,3 +17,4 @@ npm-debug.log*
 
 # backup local do template antigo (Codex/vinext)
 /_backup-codex/
+.vercel

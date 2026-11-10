@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
-import { site, siteUrl } from "@/lib/site";
+import { site, siteIndexable, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const sora = Sora({
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   title,
   description,
   alternates: { canonical: "/" },
+  robots: siteIndexable ? undefined : { index: false, follow: false },
   authors: [{ name: site.founder, url: site.linkedin }],
   openGraph: {
     title,
